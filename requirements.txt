@@ -1,0 +1,3 @@
+# AutoSecAgent — Python 依赖
+# P0 骨架仅需 PyYAML（配置/授权解析）。P1 接入执行引擎后追加。
+PyYAML>=6.0

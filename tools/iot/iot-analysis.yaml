@@ -1,0 +1,42 @@
+# IoT/车联网 子代理工具配方 — 固件/车-云通信/车云三条工具链
+# 说明：binwalk 在 Windows 原生支持差，降级链为 7z 直解 → python 签名扫描 → strings 兜底；
+# paho-mqtt 为纯 Python，路线 B 任何环境可执行。
+---
+name: binwalk
+description: 固件签名扫描与递归提取（Linux/WSL 环境优先）
+command: "binwalk -Me {args}"
+timeout: 600
+max_output_chars: 20000
+surfaces: [iot]
+dangerous: false
+---
+name: 7z
+description: 固件直解兜底（squashfs/cpio/gzip 多数格式可解）
+command: "7z x {args} -y"
+timeout: 300
+surfaces: [iot]
+---
+name: firmware-signature-scan
+description: 纯 Python 固件 magic 字节签名扫描（squashfs/ubifs/cpio/gzip/ELF 偏移定位）
+command: "python -c \"import sys; data=open(sys.argv[1],'rb').read(); sigs={b'sqsh':'squashfs-le',b'hsqs':'squashfs-be',b'UBI#':'ubifs',b'070701':'cpio',b'\\x1f\\x8b':'gzip',b'\\x7fELF':'ELF'}; [print(hex(o),n) for n,s in sigs.items() for o in [data.find(s)] if o>=0]\" {args}"
+timeout: 120
+surfaces: [iot]
+---
+name: paho-mqtt
+description: MQTT 匿名/弱凭证接入 + 主题订阅采样（纯 Python，pip install paho-mqtt）
+command: "python -c \"import paho.mqtt.client as m; print('paho OK')\" # 实际脚本由子代理按场景生成"
+timeout: 60
+surfaces: [iot]
+---
+name: hashcat
+description: 固件 shadow hash 离线爆破（$1$/$5$/$6$ MD5/sha256/sha512crypt）
+command: "hashcat -m 1800 {args} --show"
+timeout: 600
+surfaces: [iot]
+dangerous: false
+---
+name: john
+description: shadow hash 爆破备选（--format=sha512crypt）
+command: "john --show {args}"
+timeout: 600
+surfaces: [iot]

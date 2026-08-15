@@ -1,0 +1,48 @@
+# Mobile 子代理工具配方 — 拆包/静态/动态三件套
+# 说明：jadx/apktool 需 java 运行时；无 java 环境时 MobileSubagent 自动降级为
+# androguard（纯 Python，pip install androguard）或 zip+strings 兜底。
+---
+name: apktool
+description: APK 反编译（smali + 明文 AndroidManifest + 资源）
+command: "apktool d -f -o {args}"
+timeout: 300
+max_output_chars: 20000
+surfaces: [mobile]
+requires: [java]
+dangerous: false
+---
+name: jadx
+description: APK dex → java 伪码（读业务逻辑/加密算法）
+command: "jadx -d {args}"
+timeout: 600
+max_output_chars: 20000
+surfaces: [mobile]
+requires: [java]
+---
+name: androguard
+description: 纯 Python APK 解析兜底（manifest/dex 字符串/权限/组件）
+command: "python -c \"from androguard.misc import AnalyzeAPK; a,d,dx=AnalyzeAPK(r'{args}'); print(a.get_package()); [print(s) for s in dx.get_strings()]\""
+timeout: 300
+surfaces: [mobile]
+---
+name: frida
+description: 动态插桩（SSL pinning 绕过 / 加密函数 hook / 登录态提取）
+command: "frida -U -f {args} --no-pause"
+timeout: 120
+surfaces: [mobile]
+requires: [adb]
+dangerous: true
+---
+name: adb
+description: 设备交互（组件调起 / run-as / 广播注入 / 日志抓取）
+command: "adb {args}"
+timeout: 60
+surfaces: [mobile]
+dangerous: true
+---
+name: apksigner
+description: APK 签名与重打包校验（篡改重打包后验签）
+command: "apksigner sign --ks {args}"
+timeout: 60
+surfaces: [mobile]
+requires: [java]

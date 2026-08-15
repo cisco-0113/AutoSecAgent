@@ -1,0 +1,13 @@
+# AutoSecAgent 授权声明示例
+# 复制为 auth.yaml 并填入真实的授权范围。
+# 每次运行前必须提供，否则 Agent 默认拒绝执行。
+
+authorized: true                      # 必须为 true
+scope: "针对自建靶场/授权 SRC 项目的漏洞挖掘测试，仅限清单内目标"
+targets:
+  - "example.com"
+  - "api.carnet.example"
+  - "app.apk"
+start: "2026-08-15"
+end: "2026-12-31"
+notes: "所有越权测试严格限定在授权账号与授权车辆范围内"

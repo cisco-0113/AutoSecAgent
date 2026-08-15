@@ -1,0 +1,47 @@
+# AutoSecAgent 配置示例
+# 复制为 config.yaml 后按需修改
+
+# 授权声明（可在此指定，也可通过 CLI --auth 传入）
+# auth_file: auth.yaml
+# auth_required: true
+
+# 允许覆盖的攻击面（web / mobile / iot）
+attacksurfaces: [web, mobile, iot]
+
+# 执行引擎（真实运行推荐用 .env 配置 API key，此处可选覆盖）
+engine: claude-code
+engine_cmd: claude
+engine_provider: deepseek    # deepseek | deepseek-1m | glm | glm-1m
+# engine_api_key: ""          # 建议写在 .env 的 AUTOSEC_ENGINE_API_KEY
+# engine_base_url: ""         # 显式覆盖端点（默认由 provider 推导）
+# engine_model: ""            # 显式覆盖模型（默认由 provider 推导）
+max_turns: 60                # 单子代理会话轮数上限
+session_seconds: 900         # 单子代理会话挂钟上限
+
+# 止损（借鉴 hxbai stoploss）
+time_budget_sec: 900        # 单目标总时间上限(秒)
+session_budget: 30          # 单目标工具会话上限
+no_output_rounds: 5         # 连续无产出轮数上限
+target_budget_sec: 3600     # 目标级预算
+
+# 校验门（借鉴 hxbai verify）
+verify_enabled: true
+require_poc: true
+
+# 存储与报告
+data_dir: data
+report_dir: reports
+
+# 工具
+tool_dir: tools
+tool_timeout: 120
+tool_max_output_chars: 20000
+
+# P5 规模化
+account_pool_file: ""        # 测试账号池 YAML（Web 差分验证，见 docs 示例）
+batch_state_file: ""         # 批量任务状态 JSONL（去重/续跑）
+
+# P6 质量安全
+negation_enabled: false      # 否定门接 LLM（需 engine ready；未就绪自动降级不否决）
+ratelimit_rps: 1.0           # 请求速率限制（请求/秒）
+proxy_list: []               # 代理池地址列表，如 ["http://127.0.0.1:8080"]

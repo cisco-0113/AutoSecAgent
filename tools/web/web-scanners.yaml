@@ -1,0 +1,23 @@
+# Web 子代理工具配方示例
+# 红线：所有扫描/爆破工具默认限速限次（单线程、低并发、请求间隔），
+# 禁止高并发/大流量/资源耗尽型测试，确保不影响目标正常业务。
+name: nuclei
+description: 通用漏洞扫描（模板基于；限速限并发，禁止 -c 高并发）
+command: "nuclei -u {args} -silent -rate-limit 50 -c 5 -rl 30"
+timeout: 300
+max_output_chars: 20000
+surfaces: [web, iot]
+dangerous: false
+---
+name: httpx
+description: HTTP 探活与指纹
+command: "httpx -u {args} -silent -tech-detect"
+timeout: 120
+surfaces: [web]
+---
+name: sqlmap
+description: SQL 注入检测（限速限次，禁止高并发/大流量）
+command: "sqlmap -u {args} --batch --smart --delay=1 --threads=1 --retries=1 --timeout=10"
+timeout: 600
+surfaces: [web]
+dangerous: true

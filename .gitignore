@@ -1,0 +1,36 @@
+# ── 敏感配置（真实授权/密钥，禁止提交）──
+.env
+config.yaml
+auth.local.yaml
+auth.oppo.yaml
+auth.*.yaml
+!auth.example.yaml
+
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# ── 运行时数据（审计/产物/报告/自学习）──
+data/
+logs/
+reports/
+
+# ── 大二进制工具（通过 tools/mobile/setup_mobile_tools.ps1 引导下载）──
+tools/mobile/bin/platform-tools/
+tools/mobile/bin/apktool.jar
+tools/mobile/bin/platform-tools.zip
+
+# ── 本地一次性脚本（含开发机绝对路径）──
+run_*.py
+
+# ── 系统 / IDE ──
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
