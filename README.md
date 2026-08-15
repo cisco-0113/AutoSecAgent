@@ -1,6 +1,6 @@
 # AutoSecAgent
 
-面向**授权漏洞挖掘项目**的单机自动化 Agent，覆盖 **车联网 (IoV) · Web · 移动端 APP** 三大攻击面。
+面向**授权漏洞挖掘项目**的单机自动化 Agent。
 
 以 Claude Code 为执行引擎（可指向 DeepSeek / GLM 等 Anthropic 兼容端点），把「目标 → 攻击面分类 → 授权校验 → 子代理编排 → 漏洞验证 → 报告交付」整条链路自动化，并内置**安全红线**、**对抗式防误报**与**规模化批量调度**能力。
 
@@ -198,7 +198,7 @@ proxy_list: []                        # 代理池
 python smoke_test_p1.py              # 引擎/工具治理/校验门（11 项）
 python smoke_test_p2.py              # 移动端静态工作流（23 项）
 python smoke_test_p2_dynamic.py      # 移动端动态工作流（20 项）
-python smoke_test_p3.py              # 车联网三链（25 项）
+python smoke_test_p3.py              # Iot三链（25 项）
 python smoke_test_p4.py              # Web 差分 + 报告（28 项）
 python smoke_test_srcreport.py       # SRC 报告规范（16 项）
 python smoke_test_safety.py          # 安全红线（16 项）
